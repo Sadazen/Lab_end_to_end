@@ -2,5 +2,5 @@ FROM python:3.10
 WORKDIR /app
 COPY requirements.txt .
 RUN pip install -r requirements.txt
-COPY generator.py .
-CMD ["python", "generator.py"]
+COPY consumer.py .
+CMD ["python", "consumer.py"]

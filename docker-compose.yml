@@ -1,15 +1,25 @@
-version: "3.8"
+version: "3.9"
 
 services:
+  redis:
+    image: redis:7
+    ports:
+      - "6379:6379"
+
   generator:
     build: ./generator
-    container_name: generator
-    ports:
-      - "8000:8000"
+    depends_on:
+      - redis
+
+  consumer:
+    build: ./consumer
+    depends_on:
+      - redis
+    volumes:
+      - ./data:/data
 
   prometheus:
     image: prom/prometheus
-    container_name: prometheus
     volumes:
       - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
     ports:
@@ -17,6 +27,5 @@ services:
 
   grafana:
     image: grafana/grafana
-    container_name: grafana
     ports:
       - "3000:3000"
